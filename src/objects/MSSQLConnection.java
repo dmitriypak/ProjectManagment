@@ -8,16 +8,19 @@ import java.sql.SQLException;
  * Created by HP on 07.02.2017.
  */
 public class MSSQLConnection {
-    public static Connection connector() throws SQLException {
-        Connection conn;
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=DB_MGTU";
-            conn = DriverManager.getConnection(url, "sa", "Rightstep2015");
+    private static Connection conn;
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
+    public static Connection getConnection() throws SQLException {
+        if (conn==null){
+            try {
+                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                String url = "jdbc:sqlserver://localhost:1434;databaseName=DB_MGTU";
+                conn = DriverManager.getConnection(url, "sa", "Rightstep2015");
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                return null;
+            }
         }
         return conn;
     }

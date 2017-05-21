@@ -1,0 +1,25 @@
+/*#colId{*/
+    /*-fx-alignment: center;*/
+/*}*/
+#btnUsersSettings{
+    -fx-background-image: url("../images/User.png");
+    -fx-background-size: stretch;
+    -fx-background-repeat: no-repeat;
+}
+
+#btnAddUser{
+    -fx-background-image: url("../images/User-Add.png");
+    -fx-background-size: stretch;
+    -fx-background-repeat: no-repeat;
+}
+
+#btnEditUser{
+    -fx-background-image: url("../images/User-Edit.png");
+    -fx-background-size: stretch;
+    -fx-background-repeat: no-repeat;
+}
+#btnDeleteUser{
+    -fx-background-image: url("../images/User-Delete.png");
+    -fx-background-size: stretch;
+    -fx-background-repeat: no-repeat;
+}

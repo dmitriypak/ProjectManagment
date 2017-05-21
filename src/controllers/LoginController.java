@@ -11,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import objects.MSSQLConnection;
-import objects.ThreadWait;
+import objects.User;
 import org.controlsfx.control.textfield.CustomTextField;
 
 import java.io.IOException;
@@ -37,9 +37,10 @@ public class LoginController {
     private MainDialogController mainDialogController;
     private Stage mainStage;
     private FXMLLoader fxmlLoader = new FXMLLoader();
-    ThreadWait threadWait= new ThreadWait();
     public Connection connection;
-
+    public static String role = "";
+    public static final User loginUser = new User();
+    ResultSet resultSet;
     @FXML
     public void initialize(){
 
@@ -48,7 +49,7 @@ public class LoginController {
 
     private void initLoader(){
         try {
-            fxmlLoader.setLocation(getClass().getResource("..//fxml/main.fxml"));
+            fxmlLoader.setLocation(getClass().getResource("../fxml/main.fxml"));
             fxmlMain = fxmlLoader.load();
             mainDialogController = fxmlLoader.getController();
 
@@ -57,41 +58,38 @@ public class LoginController {
         }
 
     }
-//    txtPassword.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//        @Override
-//        public void handle(KeyEvent event) {
-//            if(event.getCode()== KeyCode.ENTER){
-//
-//            }
-//        }
-//    });
+
     public void hideMessage(ActionEvent actionEvent){
         labelWrongUser.setVisible(false);
     }
     public void actionLogin(ActionEvent actionEvent) throws InterruptedException {
-        int checkUser = 0;
-//        Object source = actionEvent.getSource();
-//        if(!(source instanceof Button))
-//            return;
-//        Button clickedButton = (Button) source;
-
-
+        byte checkUser = 0;
         try {
-            connection = MSSQLConnection.connector();
-            DatabaseMetaData dmd = connection.getMetaData();
-            ResultSet rs = dmd.getTables(null,null,null,new String[]{"Table"});
-            PreparedStatement pstmt = connection.prepareStatement("select 1 from _apsuser where username = ? and password = ?");
-            pstmt.setString(1,txtUsername.getText());
-            pstmt.setString(2,txtPassword.getText());
-            rs = pstmt.executeQuery();
+            connection = MSSQLConnection.getConnection();
+            CallableStatement call = connection.prepareCall("{call dbo.LoginUser(?,?,?,?)}");
+            call.setString("username",txtUsername.getText());
+            call.setString("password",txtPassword.getText());
+            call.registerOutParameter(3, Types.TINYINT);
+            call.registerOutParameter(4, Types.NVARCHAR);
+            resultSet = call.executeQuery();
 
-            if(rs.next())
-                checkUser = rs.getInt(1);
+            if (resultSet.next()){
+                System.out.println("User Logged");
+                checkUser = resultSet.getByte(1);
+                role = resultSet.getString(2);
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
         if(checkUser == 1) {
+            loginUser.setUsername(txtUsername.getText());
+            loginUser.setPassword(txtPassword.getText());
+            try {
+                loginUser.setRole(resultSet.getString(2));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             if (mainStage == null) {
                 mainStage = new Stage();
                 mainStage.setTitle("Главное меню");
@@ -100,8 +98,6 @@ public class LoginController {
                 mainStage.setResizable(false);
                 labelWrongUser.setVisible(false);
             }
-
-            Thread.sleep(2000);
             mainStage.show();
 
             Node sourceWindow = (Node) actionEvent.getSource();
@@ -113,4 +109,5 @@ public class LoginController {
         }
 
     }
+
 }
