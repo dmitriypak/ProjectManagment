@@ -1,8 +1,11 @@
 package controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import objects.MSSQLConnection;
@@ -23,9 +26,17 @@ public class EditUserController {
     @FXML
     private TextField txtEmail;
     @FXML
-    private TextField txtRole;
+    private ComboBox comboRole;
+
 
     private User user;
+    @FXML
+    public void initialize(){
+        createComboBox();
+    }
+
+
+
 
     public void setUser(User user){
         if(user==null){
@@ -35,7 +46,7 @@ public class EditUserController {
         txtUsername.setText(user.getUsername());
         txtPassword.setText(user.getPassword());
         txtEmail.setText(user.getEmail());
-        txtRole.setText(user.getRole());
+        comboRole.setValue(user.getRole());
         System.out.println(user.getId());
     }
 
@@ -51,7 +62,7 @@ public class EditUserController {
         user.setUsername(txtUsername.getText());
         user.setPassword(txtPassword.getText());
         user.setEmail(txtEmail.getText());
-        user.setRole(txtRole.getText());
+        user.setRole((String) comboRole.getValue());
         if(user.getId()!=""){
             updateUser(user);
         }
@@ -89,6 +100,11 @@ public class EditUserController {
         }
     }
 
-
+    private void createComboBox(){
+        ObservableList<String> rolesList = FXCollections.observableArrayList(
+                "admin",
+                "user");
+        comboRole.setItems(rolesList);
+    }
 
 }
