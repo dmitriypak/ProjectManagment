@@ -1,6 +1,9 @@
-/*#colId{*/
-    /*-fx-alignment: center;*/
-/*}*/
+#colEndDate{
+    -fx-alignment: center;
+}
+#colStartDate{
+    -fx-alignment: center;
+}
 #btnUsersSettings{
     -fx-background-image: url("../images/User.png");
     -fx-background-size: stretch;

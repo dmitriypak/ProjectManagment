@@ -1,16 +1,19 @@
 package controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import objects.MSSQLConnection;
+import objects.Status;
 import objects.Task;
 
-import java.sql.CallableStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 
 
@@ -33,14 +36,42 @@ public class EditTaskController {
     @FXML
     private TextField txtTaskFactWorkHrs;
     @FXML
-    private TextField txtTaskStatus;
-    @FXML
     private TextField txtTaskComplete;
+    @FXML
+    private TextField txtTaskPriority;
+    @FXML
+    private TextField txtTaskID;
+    @FXML
+    private ComboBox comboStatus;
 
     private Task task;
+    public static ObservableList<String> comboStatusesArrayList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize(){
+       createListStatuses();
+
+    }
+
+    private void createListStatuses() {
+        try {
+            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.getStatuses(?,?,?)}");
+            call.registerOutParameter(1, Types.INTEGER);
+            call.registerOutParameter(2, Types.NVARCHAR);
+            call.registerOutParameter(3, Types.TINYINT);
+            ResultSet rs = call.executeQuery();
+            while (rs.next()) {
+                Status status = new Status();
+                status.setId(rs.getString(1));
+                status.setName(rs.getString(2));
+                status.setIs_complete(rs.getString(3));
+                comboStatusesArrayList.add(status.getName());
+            }
+            comboStatus.setItems(comboStatusesArrayList);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setTask(Task task){
@@ -48,12 +79,14 @@ public class EditTaskController {
             return;
         }
         this.task=task;
+        txtTaskID.setText(task.getId());
         txtTaskName.setText(task.getName());
         txtTaskDescr.setText(task.getDescr());
         txtTaskEstimatedWorkHrs.setText(task.getEstimatedWorkHrs());
         txtTaskFactWorkHrs.setText(task.getFactWorkHrs());
-        txtTaskStatus.setText(task.getStatus());
+        comboStatus.setValue(task.getStatus());
         txtTaskComplete.setText(task.getComplete());
+        txtTaskPriority.setText(task.getPriority());
         if(task.getStartDate() == ""){
             txtTaskStartDate.setValue(LocalDate.now());
         }
@@ -77,14 +110,34 @@ public class EditTaskController {
         stage.hide();
     }
     public void actionSave(ActionEvent actionEvent) {
+        PreparedStatement call = null;
+        int is_complete = 0;
         task.setName(txtTaskName.getText());
         task.setDescr(txtTaskDescr.getText());
         task.setStartDate(String.valueOf(txtTaskStartDate.getValue()));
         task.setEndDate(String.valueOf(txtTaskEndDate.getValue()));
-        task.setComplete(txtTaskComplete.getText());
+
+        try {
+            call = MSSQLConnection.getConnection().prepareStatement("select is_complete from statuses where name = ?");
+            call.setString(1, String.valueOf(comboStatus.getValue()));
+            ResultSet rs = call.executeQuery();
+            while (rs.next()){
+                is_complete = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if(is_complete==1) {
+            task.setComplete("100");
+        }
+        else{
+            task.setComplete(txtTaskComplete.getText());
+        }
+
         task.setEstimatedWorkHrs(txtTaskEstimatedWorkHrs.getText());
         task.setFactWorkHrs(txtTaskFactWorkHrs.getText());
-        task.setStatus(txtTaskStatus.getText());
+        task.setPriority(txtTaskPriority.getText());
+        task.setStatus(String.valueOf(comboStatus.getValue()));
         if(task.getId()!=""){
             updateTask(task);
         }
@@ -96,12 +149,17 @@ public class EditTaskController {
 
     private void updateTask(Task task) {
         try {
-            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.updateTask(?,?,?,?,?)}");
-            call.setString("id",task.getId());
+            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.updateTask(?,?,?,?,?,?,?,?,?,?)}");
+            call.setInt("id",Integer.parseInt(task.getId()));
             call.setString("name",task.getName());
             call.setString("descr",task.getDescr());
             call.setString("startdate",task.getStartDate());
             call.setString("enddate",task.getEndDate());
+            call.setDouble("estimatedWorkHrs",Double.parseDouble(task.getEstimatedWorkHrs()));
+            call.setDouble("factWorkHrs",Double.parseDouble(task.getFactWorkHrs()));
+            call.setInt("status",Integer.parseInt(String.valueOf(comboStatus.getSelectionModel().getSelectedIndex()+1)));
+            call.setInt("priority",Integer.parseInt(task.getPriority()));
+            call.setInt("complete",Integer.parseInt(task.getComplete()));
             call.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -110,9 +168,15 @@ public class EditTaskController {
 
     private void insertTask(Task task) {
         try {
-            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.createTask(?,?,?,?)}");
+            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.createTask(?,?,?,?,?,?,?,?,?,?)}");
             call.setString("name",task.getName());
             call.setString("descr",task.getDescr());
+            call.setString("projectid",task.getProjectId());
+            call.setString("priority",task.getPriority());
+            call.setString("status",task.getStatus());
+            call.setString("estimatedWorkHrs",task.getEstimatedWorkHrs());
+            call.setString("factWorkHrs",task.getFactWorkHrs());
+            call.setString("complete",task.getComplete());
             call.setString("startdate",task.getStartDate());
             call.setString("enddate",task.getEndDate());
             call.executeUpdate();

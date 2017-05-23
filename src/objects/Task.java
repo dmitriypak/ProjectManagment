@@ -27,10 +27,17 @@ public class Task {
 
     }
 
+    public Task(String projectId){
+        this.projectId = new SimpleStringProperty(projectId);
+    }
+    public Task(String id, String name){
+        this.id = new SimpleStringProperty(name);
+        this.name = new SimpleStringProperty(name);
+    }
 
     public Task(String id, String name, String descr, String startDate, String endDate, String estimatedWorkHrs, String factWorkHrs, String priority,
                 String complete, String status, String projectId) {
-        this.id = new SimpleStringProperty(name);
+        this.id = new SimpleStringProperty(id);
         this.name = new SimpleStringProperty(name);
         this.descr = new SimpleStringProperty(descr);
         this.startDate = new SimpleStringProperty(startDate);
@@ -147,7 +154,7 @@ public class Task {
         return complete.get();
     }
 
-    public SimpleStringProperty completedProperty() {
+    public SimpleStringProperty completeProperty() {
         return complete;
     }
 

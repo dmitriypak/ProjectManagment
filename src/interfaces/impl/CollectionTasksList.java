@@ -27,12 +27,11 @@ public class CollectionTasksList implements TasksList{
 
     }
 
-    public void clearProjectsList(){
+    public void clearTasksList(){
         tasksList.clear();
     }
-    public ObservableList<Task> getProjectsListList() {
+    public ObservableList<Task> getTasksList() {
         return tasksList;
     }
-
 
 }

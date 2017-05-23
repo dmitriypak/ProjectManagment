@@ -21,9 +21,7 @@ import objects.Project;
 import objects.Task;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 import static controllers.LoginController.loginUser;
 
@@ -48,13 +46,26 @@ public class MainDialogController {
     @FXML
     private Label labelRole;
     @FXML
-    private TreeTableView <Project>tableProjectManage;
+    private TreeTableView <Task>tableProjectManage;
     @FXML
-    private TreeTableColumn <Project,String> colName;
+    private TreeTableColumn <Task,String> colName;
     @FXML
-    private TreeTableColumn <Project,String> colStartDate;
+    private TreeTableColumn <Task,String> colStartDate;
     @FXML
-    private TreeTableColumn <Project,String> colEndDate;
+    private TreeTableColumn <Task,String> colEndDate;
+    @FXML
+    private TreeTableColumn <Task,String> colTaskDescr;
+    @FXML
+    private TreeTableColumn <Task,String> colEstimatedWorkHrs;
+    @FXML
+    private TreeTableColumn <Task,String> colFactWorkHrs;
+    @FXML
+    private TreeTableColumn <Task,String> colComplete;
+    @FXML
+    private TreeTableColumn <Task,String> colPriority;
+    @FXML
+    private TreeTableColumn <Task,String> colStatus;
+
     @FXML
     private ComboBox<String>comboProjects;
 
@@ -65,31 +76,109 @@ public class MainDialogController {
     private Node nodesource;
     private CollectionTasksList tasksListImpl = new CollectionTasksList();
 
-    TreeItem<Project>root ;
-    TreeItem<Project>task ;
-    ObservableList<Project> projectArrayList = FXCollections.observableArrayList();
-    ObservableList<String>comboProjectArrayList = FXCollections.observableArrayList();
+    TreeItem<Task>root ;
+    TreeItem<Task>treeitemtask ;
+
+    public static ObservableList<Project> projectArrayList = FXCollections.observableArrayList();
+    public static ObservableList<String>comboProjectArrayList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize(){
-        initLoader();
-        root = new TreeItem<>(new Project(comboProjects.getId(),comboProjects.getValue()));
-        task = new TreeItem<>(new Project("1","Task1"));
-        root.getChildren().setAll(task);
 
-        colName.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Project,String>, ObservableValue<String>>() {
+        initLoader();
+        //наименование
+        colName.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Task,String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Project, String > param) {
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Task, String > param) {
                 return param.getValue().getValue().nameProperty();
             }
         });
         colName.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
-        colName.setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<Project, String>>() {
+        colName.setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<Task, String>>() {
             @Override
-            public void handle(TreeTableColumn.CellEditEvent<Project, String> event) {
+            public void handle(TreeTableColumn.CellEditEvent<Task, String> event) {
                 System.out.println("ok");
             }
         });
+
+        //описание
+        colTaskDescr.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Task,String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Task, String > param) {
+                return param.getValue().getValue().descrProperty();
+            }
+        });
+        colTaskDescr.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+        colTaskDescr.setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<Task, String>>() {
+            @Override
+            public void handle(TreeTableColumn.CellEditEvent<Task, String> event) {
+                System.out.println("ok");
+            }
+        });
+
+        //startdate
+        colStartDate.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Task,String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Task, String > param) {
+                return param.getValue().getValue().startDateProperty();
+            }
+        });
+        colStartDate.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+        colStartDate.setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<Task, String>>() {
+            @Override
+            public void handle(TreeTableColumn.CellEditEvent<Task, String> event) {
+                System.out.println("ok");
+            }
+        });
+
+        //enddate
+        colEndDate.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Task,String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Task, String > param) {
+                return param.getValue().getValue().endDateProperty();
+            }
+        });
+
+        //estimatedWokrHrs
+        colEstimatedWorkHrs.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Task,String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Task, String > param) {
+                return param.getValue().getValue().estimatedWorkHrsProperty();
+            }
+        });
+
+        //factWokrHrs
+        colFactWorkHrs.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Task,String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Task, String > param) {
+                return param.getValue().getValue().factWorkHrsProperty();
+            }
+        });
+
+        //priority
+        colPriority.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Task,String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Task, String > param) {
+                return param.getValue().getValue().priorityProperty();
+            }
+        });
+
+        //status
+        colStatus.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Task,String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Task, String > param) {
+                return param.getValue().getValue().statusProperty();
+            }
+        });
+
+        //complete
+        colComplete.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Task,String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Task, String > param) {
+                return param.getValue().getValue().completeProperty();
+            }
+        });
+
         tableProjectManage.setEditable(true);
         tableProjectManage.setRoot(root);
         tableProjectManage.setShowRoot(true);
@@ -97,8 +186,15 @@ public class MainDialogController {
     }
 
     private void initLoader(){
-
         createProjectsList();
+        root = new TreeItem<>(new Task(comboProjects.getId(),comboProjects.getValue()));
+        getStatProject();
+        try {
+            fillData();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         try {
             fxmlLoader.setLocation(getClass().getResource("..//fxml/editTask.fxml"));
             fxmlEdit = fxmlLoader.load();
@@ -128,9 +224,16 @@ public class MainDialogController {
     }
 
     public void actionSelectcomboProjects (ActionEvent actionEvent) {
-       root = new TreeItem<>(new Project(comboProjects.getId(),comboProjects.getValue()));
-       root.getChildren().addAll(task);
-       tableProjectManage.setRoot(root);
+        root = new TreeItem<>(new Task(comboProjects.getId(),comboProjects.getValue()));
+        try {
+            fillData();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        getStatProject();
+
+        tableProjectManage.setRoot(root);
 
     }
 
@@ -150,6 +253,7 @@ public class MainDialogController {
         }catch (IOException e){
             e.printStackTrace();
         }
+
     }
 
     public void showProjects(ActionEvent actionEvent){
@@ -177,31 +281,43 @@ public class MainDialogController {
 
         switch (clickedButton.getId()) {
             case "btnAddTask":
-                Task task = new Task();
+                Task task = new Task(projectArrayList.get(comboProjects.getSelectionModel().getSelectedIndex()).getId());
                 editTaskController.setTask(task);
                 task = editTaskController.getTask();
                 tasksListImpl.add(task);
+                treeitemtask = new TreeItem<>(task);
+                root.getChildren().add(treeitemtask);
                 showDialog();
                 break;
 
             case "btnEditTask":
-                //editProjectController.setTask((Task) tableProjectManage.getSelectionModel().getSelectedItem());
+                editTaskController.setTask(tasksListImpl.getTasksList().get(tableProjectManage.getSelectionModel().getSelectedIndex()-1));
                 showDialog();
                 break;
 
             case "btnDeleteTask":
                 Task deltask;
-               // deltask = (Task) tableProjectManage.getSelectionModel().getSelectedItem();
-               // tasksListImpl.delete(deltask);
-               // deleteTask(deltask);
+                deltask = tasksListImpl.getTasksList().get(tableProjectManage.getSelectionModel().getSelectedIndex()-1);
+                tasksListImpl.delete(deltask);
+                deleteTask(deltask);
+                root.getChildren().remove(tableProjectManage.getSelectionModel().getSelectedIndex()-1);
                 break;
         }
 
     }
 
+    private void deleteTask(Task deltask) {
+        try {
+            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.deleteTask(?)}");
+            call.setString("id",deltask.getId());
+            call.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void showDialog() {
         if (editTaskStage==null) {
-
             editTaskStage = new Stage();
             editTaskStage.setTitle("Редактирование задачи");
             editTaskStage.setMinHeight(150);
@@ -212,7 +328,69 @@ public class MainDialogController {
             editTaskStage.initOwner((Stage) nodesource.getScene().getWindow());
         }
         editTaskStage.showAndWait();
-
+        getStatProject();
     }
+
+    private void getStatProject() {
+        try {
+            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.getStatProject(?,?,?,?,?,?)}");
+            call.setInt("id", Integer.parseInt(projectArrayList.get(comboProjects.getSelectionModel().getSelectedIndex()).getId()));
+            call.registerOutParameter(2, Types.DECIMAL);
+            call.registerOutParameter(3, Types.DECIMAL);
+            call.registerOutParameter(4, Types.DATE);
+            call.registerOutParameter(5, Types.DATE);
+            call.registerOutParameter(6, Types.INTEGER);
+
+            ResultSet rs = call.executeQuery();
+            while (rs.next()) {
+                root.getValue().setEstimatedWorkHrs(rs.getString(1));
+                root.getValue().setFactWorkHrs(rs.getString(2));
+                root.getValue().setStartDate(rs.getString(3));
+                root.getValue().setEndDate(rs.getString(4));
+                root.getValue().setComplete(rs.getString(5));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void fillData() throws SQLException{
+        try {
+            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.getTasks(?,?,?,?,?,?,?,?,?,?,?)}");
+            call.registerOutParameter("id", Types.INTEGER);
+            call.registerOutParameter("name", Types.NVARCHAR);
+            call.registerOutParameter("descr", Types.NVARCHAR);
+            call.registerOutParameter("startdate", Types.DATE);
+            call.registerOutParameter("enddate", Types.DATE);
+            call.registerOutParameter("estimatedworkhrs", Types.DECIMAL);
+            call.registerOutParameter("factworkhrs", Types.DECIMAL);
+            call.registerOutParameter("complete", Types.INTEGER);
+            call.registerOutParameter("status", Types.NVARCHAR);
+            call.registerOutParameter("priority", Types.TINYINT);
+            call.setInt("projectid", Integer.parseInt(projectArrayList.get(comboProjects.getSelectionModel().getSelectedIndex()).getId()));
+            ResultSet rs = call.executeQuery();
+            System.out.println(Integer.parseInt(projectArrayList.get(comboProjects.getSelectionModel().getSelectedIndex()).getId()));
+            while (rs.next()){
+                Task task = new Task(rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("descr"),
+                        rs.getString("startdate"),
+                        rs.getString("enddate"),
+                        rs.getString("estimatedworkhrs"),
+                        rs.getString("factworkhrs"),
+                        rs.getString("priority"),
+                        rs.getString("complete"),
+                        rs.getString("status"),
+                        rs.getString("projectid"));
+                tasksListImpl.add(task);
+
+                treeitemtask = new TreeItem<>(task);
+                root.getChildren().add(treeitemtask);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

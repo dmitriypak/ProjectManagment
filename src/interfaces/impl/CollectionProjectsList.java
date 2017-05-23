@@ -30,7 +30,7 @@ public class CollectionProjectsList implements ProjectsList{
     public void clearProjectsList(){
         projectsList.clear();
     }
-    public ObservableList<Project> getProjectsListList() {
+    public ObservableList<Project> getProjectsList() {
         return projectsList;
     }
 

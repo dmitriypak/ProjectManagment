@@ -22,6 +22,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import static controllers.MainDialogController.comboProjectArrayList;
+import static controllers.MainDialogController.projectArrayList;
+
 /**
  * Created by HP on 21.05.2017.
  */
@@ -104,6 +107,8 @@ public class ProjectController {
             case "btnDeleteProject":
                 Project delproject;
                 delproject = (Project) tableProjects.getSelectionModel().getSelectedItem();
+                comboProjectArrayList.remove(tableProjects.getSelectionModel().getSelectedIndex());
+                projectArrayList.remove(delproject);
                 projectsListImpl.delete(delproject);
                 deleteProject(delproject);
                 break;
@@ -149,7 +154,7 @@ public class ProjectController {
                         rs.getString(4), rs.getString(5));
                 projectsListImpl.add(project);
             }
-            tableProjects.setItems(projectsListImpl.getProjectsListList());
+            tableProjects.setItems(projectsListImpl.getProjectsList());
         } catch (SQLException e) {
             e.printStackTrace();
         }

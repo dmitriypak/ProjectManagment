@@ -10,8 +10,13 @@ import objects.MSSQLConnection;
 import objects.Project;
 
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+
+import static controllers.MainDialogController.comboProjectArrayList;
+import static controllers.MainDialogController.projectArrayList;
 
 
 /**
@@ -74,10 +79,26 @@ public class EditProjectController {
         }
         else{
             insertProject(project);
+
+            PreparedStatement call = null;
+            try {
+                call = MSSQLConnection.getConnection().prepareStatement("select id from projects where name = ?");
+                call.setString(1,project.getName());
+                ResultSet rs = call.executeQuery();
+
+                while (rs.next()){
+                    project.setId(rs.getString(1));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            projectArrayList.add(project);
+            comboProjectArrayList.add(project.getName());
         }
 
         actionClose(actionEvent);
     }
+
 
     private void updateProject(Project project) {
         try {
