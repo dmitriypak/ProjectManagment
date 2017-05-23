@@ -5,12 +5,13 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="477.0" prefWidth="509.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserController">
+<AnchorPane prefHeight="477.0" prefWidth="850.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserController">
    <children>
       <TableView fx:id="tableUsers" layoutX="27.0" layoutY="60.0" prefHeight="325.0" prefWidth="495.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="42.0">
         <columns>
           <TableColumn fx:id="colUsername" prefWidth="120.0" text="Логин" />
-          <TableColumn fx:id="colPassword" prefWidth="120.0" text="Пароль" />
+            <TableColumn fx:id="colFullName" minWidth="100.0" prefWidth="173.0" text="Ф.И.О" />
+          <TableColumn fx:id="colPassword" prefWidth="75.0" text="Пароль" />
             <TableColumn fx:id="colEmail" prefWidth="161.0" text="Эл.почта" />
             <TableColumn fx:id="colRole" prefWidth="93.0" text="Роль" />
             <TableColumn fx:id="colUserId" prefWidth="93.0" visible="false" />

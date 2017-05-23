@@ -11,17 +11,23 @@ public class User {
     private SimpleStringProperty role = new SimpleStringProperty("");
     private SimpleStringProperty password = new SimpleStringProperty("");
     private SimpleStringProperty email = new SimpleStringProperty("");
+    private SimpleStringProperty fullname = new SimpleStringProperty("");
 
     public User(){
 
     }
-
-    public User(String id, String username, String password, String email, String role) {
+    public User(String id, String role, String fullname) {
+        this.id = new SimpleStringProperty(id);
+        this.role = new SimpleStringProperty(role);
+        this.fullname = new SimpleStringProperty(fullname);
+    }
+    public User(String id, String username, String password, String email, String role, String fullname) {
         this.id = new SimpleStringProperty(id);
         this.username = new SimpleStringProperty(username);
         this.password = new SimpleStringProperty(password);
         this.email = new SimpleStringProperty(email);
         this.role = new SimpleStringProperty(role);
+        this.fullname = new SimpleStringProperty(fullname);
     }
 
     public SimpleStringProperty id() {
@@ -39,6 +45,9 @@ public class User {
     public SimpleStringProperty emailProperty() {
         return email;
     }
+    public SimpleStringProperty fullnameProperty() {
+        return fullname;
+    }
 
     public String getId() {
         return id.get();
@@ -55,6 +64,9 @@ public class User {
     public String getEmail() {
         return email.get();
     }
+    public String getFullname() {
+        return fullname.get();
+    }
 
     public void setRole(String role) {
         this.role.set(role);
@@ -67,6 +79,9 @@ public class User {
     }
     public void setEmail(String email) {
         this.email.set(email);
+    }
+    public void setFullname(String fullname) {
+        this.fullname.set(fullname);
     }
 }
 

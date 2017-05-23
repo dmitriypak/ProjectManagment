@@ -2,14 +2,10 @@ package objects;
 
 import javafx.beans.property.SimpleStringProperty;
 
-import java.util.ArrayList;
-
 /**
  * Created by HP on 22.05.2017.
  */
 public class Task {
-   // private Project project;
-   private ArrayList<User>userTaskList = new ArrayList<User>();
 
     private SimpleStringProperty id = new SimpleStringProperty("");
     private SimpleStringProperty name = new SimpleStringProperty("");
@@ -19,9 +15,23 @@ public class Task {
     private SimpleStringProperty estimatedWorkHrs = new SimpleStringProperty("");
     private SimpleStringProperty factWorkHrs = new SimpleStringProperty("");
     private SimpleStringProperty priority = new SimpleStringProperty("");
-    private SimpleStringProperty complete = new SimpleStringProperty();
-    private SimpleStringProperty status = new SimpleStringProperty();
-    private SimpleStringProperty projectId = new SimpleStringProperty();
+    private SimpleStringProperty complete = new SimpleStringProperty("");
+    private SimpleStringProperty status = new SimpleStringProperty("");
+    private SimpleStringProperty projectId = new SimpleStringProperty("");
+
+    public String getWorkersList() {
+        return workersList.get();
+    }
+
+    public SimpleStringProperty workersListProperty() {
+        return workersList;
+    }
+
+    public void setWorkersList(String workersList) {
+        this.workersList.set(workersList);
+    }
+
+    private SimpleStringProperty workersList = new SimpleStringProperty("");
 
     public Task(){
 
@@ -50,9 +60,6 @@ public class Task {
         this.projectId = new SimpleStringProperty(projectId);
     }
 
-    private void addWorkers(User user){
-        userTaskList.add(user);
-    }
 
     public String getId() {
         return id.get();

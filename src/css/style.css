@@ -4,6 +4,13 @@
 #colStartDate{
     -fx-alignment: center;
 }
+
+#btnAddWorkers{
+    -fx-background-image: url("../images/Walk.png");
+    -fx-background-size: stretch;
+    -fx-background-repeat: no-repeat;
+}
+
 #btnUsersSettings{
     -fx-background-image: url("../images/User.png");
     -fx-background-size: stretch;

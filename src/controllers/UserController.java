@@ -44,7 +44,8 @@ public class UserController {
     private Button btnEditUser;
     @FXML
     private Button btnDeleteUser;
-
+    @FXML
+    private TableColumn colFullName;
 
 
     private Parent fxmlEdit;
@@ -75,6 +76,7 @@ public class UserController {
         colPassword.setCellValueFactory(new PropertyValueFactory<User,String>("password"));
         colEmail.setCellValueFactory(new PropertyValueFactory<User,String>("email"));
         colRole.setCellValueFactory(new PropertyValueFactory<User,String>("role"));
+        colFullName.setCellValueFactory(new PropertyValueFactory<User,String>("fullname"));
         try {
             fillData();
         } catch (SQLException e) {
@@ -140,17 +142,18 @@ public class UserController {
     }
     private void fillData() throws SQLException{
         try {
-            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.getUsers(?,?,?,?,?)}");
+            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.getUsers(?,?,?,?,?,?)}");
             call.registerOutParameter("id", Types.INTEGER);
             call.registerOutParameter("username", Types.NVARCHAR);
             call.registerOutParameter("password", Types.NVARCHAR);
             call.registerOutParameter("email", Types.NVARCHAR);
             call.registerOutParameter("role_code", Types.NVARCHAR);
+            call.registerOutParameter("fullname", Types.NVARCHAR);
 
             ResultSet rs = call.executeQuery();
             while (rs.next()){
                 User user = new User(rs.getString(1), rs.getString(2), rs.getString(3),
-                        rs.getString(4), rs.getString(5));
+                        rs.getString(4), rs.getString(5),rs.getString(6));
                 usersListImpl.add(user);
             }
             tableUsers.setItems(usersListImpl.getUsersList());

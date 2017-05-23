@@ -27,16 +27,14 @@ public class EditUserController {
     private TextField txtEmail;
     @FXML
     private ComboBox comboRole;
-
+    @FXML
+    private TextField txtFullName;
 
     private User user;
     @FXML
     public void initialize(){
         createComboBox();
     }
-
-
-
 
     public void setUser(User user){
         if(user==null){
@@ -46,6 +44,7 @@ public class EditUserController {
         txtUsername.setText(user.getUsername());
         txtPassword.setText(user.getPassword());
         txtEmail.setText(user.getEmail());
+        txtFullName.setText(user.getFullname());
         comboRole.setValue(user.getRole());
         System.out.println(user.getId());
     }
@@ -63,6 +62,7 @@ public class EditUserController {
         user.setPassword(txtPassword.getText());
         user.setEmail(txtEmail.getText());
         user.setRole((String) comboRole.getValue());
+        user.setFullname(txtFullName.getText());
         if(user.getId()!=""){
             updateUser(user);
         }
@@ -75,12 +75,13 @@ public class EditUserController {
 
     private void updateUser(User user) {
         try {
-            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.updateUser(?,?,?,?,?)}");
+            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.updateUser(?,?,?,?,?,?)}");
             call.setString("id",user.getId());
             call.setString("username",user.getUsername());
             call.setString("password",user.getPassword());
             call.setString("email",user.getEmail());
             call.setString("role",user.getRole());
+            call.setString("fullname",user.getFullname());
             call.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,11 +90,12 @@ public class EditUserController {
 
     private void insertUser(User user) {
         try {
-            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.createUser(?,?,?,?)}");
+            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.createUser(?,?,?,?,?)}");
             call.setString("username",user.getUsername());
             call.setString("password",user.getPassword());
             call.setString("email",user.getEmail());
             call.setString("role",user.getRole());
+            call.setString("fullname",user.getFullname());
             call.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -102,8 +104,9 @@ public class EditUserController {
 
     private void createComboBox(){
         ObservableList<String> rolesList = FXCollections.observableArrayList(
-                "admin",
-                "user");
+                "Менеджер",
+                "Разработчик",
+                "Аналитик");
         comboRole.setItems(rolesList);
     }
 

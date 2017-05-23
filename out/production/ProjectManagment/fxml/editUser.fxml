@@ -8,15 +8,17 @@
 
 <AnchorPane prefHeight="260.0" prefWidth="467.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EditUserController">
    <children>
-      <Label layoutX="39.0" layoutY="38.0" text="Логин:" />
-      <Label layoutX="34.0" layoutY="82.0" text="Пароль:" />
-      <Label layoutX="38.0" layoutY="124.0" text="e-mail:" />
-      <TextField fx:id="txtUsername" layoutX="128.0" layoutY="34.0" prefHeight="25.0" prefWidth="314.0" />
-      <TextField fx:id="txtPassword" layoutX="128.0" layoutY="78.0" prefHeight="25.0" prefWidth="314.0" />
-      <TextField fx:id="txtEmail" layoutX="128.0" layoutY="120.0" prefHeight="25.0" prefWidth="314.0" />
-      <Label layoutX="40.0" layoutY="170.0" text="Роль:" />
+      <Label layoutX="39.0" layoutY="17.0" text="Логин:" />
+      <Label layoutX="34.0" layoutY="53.0" text="Пароль:" />
+      <Label layoutX="38.0" layoutY="92.0" text="e-mail:" />
+      <TextField fx:id="txtUsername" layoutX="128.0" layoutY="13.0" prefHeight="25.0" prefWidth="314.0" />
+      <TextField fx:id="txtPassword" layoutX="128.0" layoutY="49.0" prefHeight="25.0" prefWidth="314.0" />
+      <TextField fx:id="txtEmail" layoutX="128.0" layoutY="88.0" prefHeight="25.0" prefWidth="314.0" />
+      <Label layoutX="40.0" layoutY="131.0" text="Роль:" />
       <Button fx:id="btnSave" layoutX="278.0" layoutY="214.0" mnemonicParsing="false" onAction="#actionSave" prefWidth="75.0" text="Сохранить" />
       <Button layoutX="367.0" layoutY="214.0" mnemonicParsing="false" onAction="#actionClose" prefWidth="75.0" text="Отмена" />
-      <ComboBox fx:id="comboRole" layoutX="128.0" layoutY="166.0" prefHeight="25.0" prefWidth="314.0" />
+      <ComboBox fx:id="comboRole" layoutX="128.0" layoutY="126.0" prefHeight="25.0" prefWidth="314.0" />
+      <Label layoutX="40.0" layoutY="167.0" text="ФИО:" />
+      <TextField fx:id="txtFullName" layoutX="130.0" layoutY="163.0" prefHeight="25.0" prefWidth="314.0" />
    </children>
 </AnchorPane>

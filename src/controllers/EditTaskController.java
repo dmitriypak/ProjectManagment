@@ -4,15 +4,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import objects.MSSQLConnection;
 import objects.Status;
 import objects.Task;
 
+import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 
@@ -45,6 +50,10 @@ public class EditTaskController {
     private ComboBox comboStatus;
 
     private Task task;
+    private FXMLLoader fxmlLoader = new FXMLLoader();
+    private AddWorkersController addWorkersController;
+    private Parent fxmlEdit;
+
     public static ObservableList<String> comboStatusesArrayList = FXCollections.observableArrayList();
 
     @FXML
@@ -185,6 +194,22 @@ public class EditTaskController {
         }
     }
 
+    public void actionButtonPressed(ActionEvent actionEvent) {
+        try{
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/addWorkers.fxml"));
+            Parent root = loader.load();
+            AddWorkersController addWorkersController = loader.getController();
+            addWorkersController.initialize(task);
 
+            stage.setTitle("Добавить исполнителей");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(((Node)actionEvent.getSource()).getScene().getWindow());
+            stage.showAndWait();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
 }

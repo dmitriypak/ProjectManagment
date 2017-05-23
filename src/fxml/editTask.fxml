@@ -17,10 +17,9 @@
       <Label layoutX="22.0" layoutY="18.0" text="ID задачи:" />
       <Button fx:id="btnSave" layoutX="289.0" layoutY="428.0" mnemonicParsing="false" onAction="#actionSave" prefWidth="75.0" text="Сохранить" />
       <Button layoutX="378.0" layoutY="428.0" mnemonicParsing="false" onAction="#actionClose" prefWidth="75.0" text="Отмена" />
-      <DatePicker fx:id="txtTaskStartDate" layoutX="134.0" layoutY="352.0" />
-      <DatePicker fx:id="txtTaskEndDate" layoutX="134.0" layoutY="391.0" />
-      <Label layoutX="24.0" layoutY="128.0" text="Исполнитель:" />
-      <TextField fx:id="txtTaskWorker" layoutX="128.0" layoutY="123.0" prefHeight="25.0" prefWidth="274.0" />
+      <DatePicker fx:id="txtTaskStartDate" layoutX="131.0" layoutY="352.0" />
+      <DatePicker fx:id="txtTaskEndDate" layoutX="132.0" layoutY="391.0" />
+      <Label layoutX="24.0" layoutY="128.0" text="Исполнители:" />
       <Label layoutX="25.0" layoutY="169.0" text="Плановая тр-ть:" />
       <TextField fx:id="txtTaskEstimatedWorkHrs" layoutX="129.0" layoutY="165.0" prefHeight="25.0" prefWidth="314.0" />
       <Label layoutX="25.0" layoutY="206.0" text="Факт. тр-ть:" />
@@ -32,6 +31,7 @@
       <TextField fx:id="txtTaskPriority" layoutX="129.0" layoutY="279.0" prefHeight="25.0" prefWidth="314.0" />
       <TextField fx:id="txtTaskID" disable="true" editable="false" layoutX="128.0" layoutY="15.0" prefHeight="25.0" prefWidth="314.0" />
       <ComboBox fx:id="comboStatus" layoutX="131.0" layoutY="242.0" prefHeight="25.0" prefWidth="314.0" />
-      <Button layoutX="408.0" layoutY="122.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="32.0" />
+      <Button fx:id="btnAddWorkers" layoutX="132.0" layoutY="121.0" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="32.0" prefWidth="32.0" stylesheets="@../css/style.css" />
+      <Label layoutX="27.0" layoutY="395.0" text="Дата окончания:" />
    </children>
 </AnchorPane>
