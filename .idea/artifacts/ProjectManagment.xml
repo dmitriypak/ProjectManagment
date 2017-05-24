@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="ProjectManagment">
+    <output-path>$PROJECT_DIR$/out/artifacts/ProjectManagment</output-path>
+    <root id="archive" name="ProjectManagment.jar">
+      <element id="archive" name="ProjectManagment.jar">
+        <element id="module-output" name="ProjectManagment" />
+        <element id="library" level="project" name="controlsfx-8.40.12" />
+        <element id="library" level="project" name="sqljdbc4" />
+      </element>
+      <element id="file-copy" path="$PROJECT_DIR$/../../JAVA/DISTR/sqljdbc_6.0/rus/jre8/sqljdbc42.jar" />
+    </root>
+  </artifact>
+</component>

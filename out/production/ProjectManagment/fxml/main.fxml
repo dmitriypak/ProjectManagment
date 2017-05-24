@@ -37,7 +37,7 @@
          </children>
       </HBox>
       <Button fx:id="btnUsersSettings" layoutX="14.0" layoutY="30.0" mnemonicParsing="false" onAction="#showUsers" prefHeight="32.0" prefWidth="32.0" AnchorPane.leftAnchor="5.0" />
-      <Label fx:id="labelRole" layoutX="8.0" layoutY="73.0" prefHeight="17.0" prefWidth="193.0" text="Label" />
+      <Label fx:id="labelRole" layoutX="111.0" layoutY="73.0" prefHeight="17.0" prefWidth="134.0" text="Label" />
       <Button fx:id="btnProjectSettings" layoutX="45.0" layoutY="29.0" mnemonicParsing="false" onAction="#showProjects" prefHeight="32.0" prefWidth="32.0" />
       <TreeTableView fx:id="tableProjectManage" layoutX="37.0" layoutY="93.0" prefHeight="816.0" prefWidth="1368.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="100.0">
         <columns>
@@ -55,10 +55,11 @@
             <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TreeTableView>
-      <ComboBox fx:id="comboProjects" layoutX="422.0" layoutY="34.0" onAction="#actionSelectcomboProjects" prefHeight="25.0" prefWidth="251.0" />
+      <ComboBox fx:id="comboProjects" layoutX="280.0" layoutY="34.0" onAction="#actionSelectcomboProjects" prefHeight="25.0" prefWidth="251.0" />
       <Button fx:id="btnAddTask" layoutX="85.0" layoutY="29.0" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="32.0" prefWidth="32.0" />
       <Button fx:id="btnEditTask" layoutX="129.0" layoutY="30.0" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="32.0" prefWidth="32.0" />
       <Button fx:id="btnDeleteTask" layoutX="171.0" layoutY="29.0" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="32.0" prefWidth="32.0" />
-      <Label layoutX="366.0" layoutY="36.0" text="Проект:" />
+      <Label layoutX="224.0" layoutY="36.0" text="Проект:" />
+      <Label layoutX="14.0" layoutY="73.0" text="Вы вошли как:" />
    </children>
 </AnchorPane>

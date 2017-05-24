@@ -50,8 +50,20 @@ public class AddWorkersController {
         usersTaskListImpl.clearUserList();
         tableTaskUsers.setEditable(true);
         this.task = task;
+
+        try {
+            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.getTasksNewId(?)}");
+            call.registerOutParameter(1, Types.INTEGER);
+            ResultSet rs = call.executeQuery();
+            while (rs.next()) {
+                task.setId(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         taskid = Integer.parseInt(task.getId());
-        System.out.println(taskid);
+
         colUserId.setCellValueFactory(new PropertyValueFactory<UserTask,String>("id"));
         colRole.setCellValueFactory(new PropertyValueFactory<UserTask,String>("role"));
         colFullName.setCellValueFactory(new PropertyValueFactory<UserTask,String>("fullname"));
@@ -93,6 +105,20 @@ public class AddWorkersController {
             e.printStackTrace();
         }
     }
+
+    public void setTask(Task task){
+        if(task==null){
+            return;
+        }
+        this.task=task;
+        taskid = Integer.parseInt(task.getId());
+        try {
+            fillData();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void fillData() throws SQLException {
         try {

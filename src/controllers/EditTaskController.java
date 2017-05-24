@@ -158,7 +158,7 @@ public class EditTaskController {
 
     private void updateTask(Task task) {
         try {
-            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.updateTask(?,?,?,?,?,?,?,?,?,?)}");
+            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.updateTask(?,?,?,?,?,?,?,?,?,?,?)}");
             call.setInt("id",Integer.parseInt(task.getId()));
             call.setString("name",task.getName());
             call.setString("descr",task.getDescr());
@@ -169,6 +169,7 @@ public class EditTaskController {
             call.setInt("status",Integer.parseInt(String.valueOf(comboStatus.getSelectionModel().getSelectedIndex()+1)));
             call.setInt("priority",Integer.parseInt(task.getPriority()));
             call.setInt("complete",Integer.parseInt(task.getComplete()));
+            call.setInt("projectid",Integer.parseInt(task.getProjectId()));
             call.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -201,7 +202,7 @@ public class EditTaskController {
             Parent root = loader.load();
             AddWorkersController addWorkersController = loader.getController();
             addWorkersController.initialize(task);
-
+//            addWorkersController.setTask(task);
             stage.setTitle("Добавить исполнителей");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.WINDOW_MODAL);

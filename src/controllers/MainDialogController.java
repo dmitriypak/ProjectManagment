@@ -19,6 +19,7 @@ import javafx.util.Callback;
 import objects.MSSQLConnection;
 import objects.Project;
 import objects.Task;
+import objects.User;
 
 import java.io.IOException;
 import java.sql.*;
@@ -75,6 +76,8 @@ public class MainDialogController {
     private Stage editTaskStage;
     private Node nodesource;
     private CollectionTasksList tasksListImpl = new CollectionTasksList();
+    //private User loginUser;
+    private MainDialogController mainDialogController;
 
     TreeItem<Task>root ;
     TreeItem<Task>treeitemtask ;
@@ -182,7 +185,6 @@ public class MainDialogController {
         tableProjectManage.setEditable(true);
         tableProjectManage.setRoot(root);
         tableProjectManage.setShowRoot(true);
-
     }
 
     private void initLoader(){
@@ -202,8 +204,24 @@ public class MainDialogController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
-        labelRole.setText("Вы вошли как " + loginUser.getRole());
+    public void setLoginUser(User user){
+        if(user==null){
+            return;
+        }
+        loginUser.setRole(user.getRole());
+        labelRole.setText(user.getRole());
+        System.out.println(loginUser.getRole());
+        checkUser();
+    }
+    private void checkUser(){
+        System.out.println(labelRole.getText().length());
+        if(labelRole.getText().length()==5) {
+            btnAddTask.setDisable(false);
+        }
+        else
+            btnAddTask.setDisable(true);
     }
 
     private void createProjectsList(){

@@ -39,7 +39,12 @@ public class LoginController {
     private FXMLLoader fxmlLoader = new FXMLLoader();
     public Connection connection;
     public static String role = "";
-    public static final User loginUser = new User();
+
+    public Label getLabelWrongUser() {
+        return labelWrongUser;
+    }
+
+    public static User loginUser = new User();
     ResultSet resultSet;
     @FXML
     public void initialize(){
@@ -85,11 +90,7 @@ public class LoginController {
         if(checkUser == 1) {
             loginUser.setUsername(txtUsername.getText());
             loginUser.setPassword(txtPassword.getText());
-            try {
-                loginUser.setRole(resultSet.getString(2));
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            loginUser.setRole(role);
             if (mainStage == null) {
                 mainStage = new Stage();
                 mainStage.setTitle("Главное меню");
@@ -97,6 +98,7 @@ public class LoginController {
                 mainStage.initOwner(loginStage);
                 mainStage.setResizable(false);
                 labelWrongUser.setVisible(false);
+                mainDialogController.setLoginUser(loginUser);
             }
             mainStage.show();
 
