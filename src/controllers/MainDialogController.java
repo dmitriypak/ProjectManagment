@@ -41,8 +41,10 @@ public class MainDialogController {
     private Button btnEditTask;
     @FXML
     private Button btnDeleteTask;
-
-
+    @FXML
+    private Button btnProjectSettings;
+    @FXML
+    private Button btnStatsTaskByUser;
 
     @FXML
     private Label labelRole;
@@ -219,9 +221,13 @@ public class MainDialogController {
         System.out.println(labelRole.getText().length());
         if(labelRole.getText().length()==5) {
             btnAddTask.setDisable(false);
+            btnDeleteTask.setDisable(false);
         }
-        else
+        else{
             btnAddTask.setDisable(true);
+            btnDeleteTask.setDisable(true);
+        }
+
     }
 
     private void createProjectsList(){
@@ -244,6 +250,7 @@ public class MainDialogController {
     public void actionSelectcomboProjects (ActionEvent actionEvent) {
         root = new TreeItem<>(new Task(comboProjects.getId(),comboProjects.getValue()));
         try {
+            tasksListImpl.clearTasksList();
             fillData();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -320,6 +327,25 @@ public class MainDialogController {
                 deleteTask(deltask);
                 root.getChildren().remove(tableProjectManage.getSelectionModel().getSelectedIndex()-1);
                 break;
+
+            case "btnStatsTaskByUser":
+                try{
+                    Stage stage = new Stage();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/userStats.fxml"));
+                    Parent root = loader.load();
+                    UserStatsController userStatsController = loader.getController();
+                    userStatsController.initialize(Integer.parseInt(projectArrayList.get(comboProjects.getSelectionModel().getSelectedIndex()).getId()));
+
+                    stage.setTitle("Статистика по исполнителям");
+                    stage.setScene(new Scene(root));
+                    stage.initModality(Modality.WINDOW_MODAL);
+                    stage.initOwner(((Node)actionEvent.getSource()).getScene().getWindow());
+                    stage.showAndWait();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+                break;
+
         }
 
     }

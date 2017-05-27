@@ -14,7 +14,7 @@ public class MSSQLConnection {
         if (conn==null){
             try {
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                String url = "jdbc:sqlserver://localhost:1434;databaseName=DB_MGTU";
+                String url = "jdbc:sqlserver://localhost:1434;databaseName=db_projectManagement";
                 conn = DriverManager.getConnection(url, "sa", "Rightstep2015");
 
             } catch (ClassNotFoundException e) {

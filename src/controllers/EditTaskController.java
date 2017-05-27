@@ -8,9 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import objects.MSSQLConnection;
@@ -35,8 +33,6 @@ public class EditTaskController {
     @FXML
     private DatePicker txtTaskEndDate;
     @FXML
-    private TextField txtTaskWorker;
-    @FXML
     private TextField txtTaskEstimatedWorkHrs;
     @FXML
     private TextField txtTaskFactWorkHrs;
@@ -48,6 +44,8 @@ public class EditTaskController {
     private TextField txtTaskID;
     @FXML
     private ComboBox comboStatus;
+    @FXML
+    private Button btnAddWorkers;
 
     private Task task;
     private FXMLLoader fxmlLoader = new FXMLLoader();
@@ -59,7 +57,6 @@ public class EditTaskController {
     @FXML
     public void initialize(){
        createListStatuses();
-
     }
 
     private void createListStatuses() {
@@ -134,6 +131,7 @@ public class EditTaskController {
                 is_complete = rs.getInt(1);
             }
         } catch (SQLException e) {
+
             e.printStackTrace();
         }
         if(is_complete==1) {
@@ -157,6 +155,7 @@ public class EditTaskController {
     }
 
     private void updateTask(Task task) {
+
         try {
             CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.updateTask(?,?,?,?,?,?,?,?,?,?,?)}");
             call.setInt("id",Integer.parseInt(task.getId()));
@@ -172,7 +171,12 @@ public class EditTaskController {
             call.setInt("projectid",Integer.parseInt(task.getProjectId()));
             call.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ошибка");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            //e.printStackTrace();
         }
     }
 
@@ -183,7 +187,7 @@ public class EditTaskController {
             call.setString("descr",task.getDescr());
             call.setString("projectid",task.getProjectId());
             call.setString("priority",task.getPriority());
-            call.setString("status",task.getStatus());
+            call.setString("status",String.valueOf(comboStatus.getSelectionModel().getSelectedIndex()+1));
             call.setString("estimatedWorkHrs",task.getEstimatedWorkHrs());
             call.setString("factWorkHrs",task.getFactWorkHrs());
             call.setString("complete",task.getComplete());

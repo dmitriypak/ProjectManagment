@@ -22,6 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import static controllers.LoginController.loginUser;
 import static controllers.MainDialogController.comboProjectArrayList;
 import static controllers.MainDialogController.projectArrayList;
 
@@ -56,7 +57,19 @@ public class ProjectController {
     private CollectionProjectsList projectsListImpl = new CollectionProjectsList();
 
     @FXML
-    public void initialize(){
+    public void initialize()
+    {
+        if(loginUser.getRole().length()==4){
+            btnAddProject.setDisable(true);
+            btnEditProject.setDisable(true);
+            btnDeleteProject.setDisable(true);
+        }
+        else{
+            btnAddProject.setDisable(false);
+            btnEditProject.setDisable(false);
+            btnDeleteProject.setDisable(false);
+        }
+
         initLoader();
     }
 

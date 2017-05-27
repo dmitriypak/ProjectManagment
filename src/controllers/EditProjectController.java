@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+import static controllers.LoginController.loginUser;
 import static controllers.MainDialogController.comboProjectArrayList;
 import static controllers.MainDialogController.projectArrayList;
 
@@ -32,11 +33,15 @@ public class EditProjectController {
     @FXML
     private DatePicker txtEndDate;
 
+
     private Project project;
 
     @FXML
     public void initialize(){
+
+
     }
+
 
     public void setProject(Project project){
         if(project==null){
@@ -57,6 +62,7 @@ public class EditProjectController {
         else{
             txtEndDate.setValue(LocalDate.parse(project.getStartDate()));
         }
+
         System.out.println(project.getId());
     }
 

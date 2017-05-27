@@ -5,6 +5,12 @@
     -fx-alignment: center;
 }
 
+#btnStatsTaskByUser{
+    -fx-background-image: url("../images/Group-Gear.png");
+    -fx-background-size: stretch;
+    -fx-background-repeat: no-repeat;
+}
+
 #btnAddWorkers{
     -fx-background-image: url("../images/Walk.png");
     -fx-background-size: stretch;

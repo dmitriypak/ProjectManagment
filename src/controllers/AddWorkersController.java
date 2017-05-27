@@ -42,7 +42,7 @@ public class AddWorkersController {
     @FXML
     private TableView tableTaskUsers;
 
-    private int taskid;
+    private int taskid = 0;
     private CollectionUsersTaskList usersTaskListImpl = new CollectionUsersTaskList();
     private Task task;
     @FXML
@@ -50,20 +50,26 @@ public class AddWorkersController {
         usersTaskListImpl.clearUserList();
         tableTaskUsers.setEditable(true);
         this.task = task;
-
-        try {
-            CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.getTasksNewId(?)}");
-            call.registerOutParameter(1, Types.INTEGER);
-            ResultSet rs = call.executeQuery();
-            while (rs.next()) {
-                task.setId(rs.getString(1));
+//        taskid = Integer.parseInt(task.getId());
+//        System.out.println(taskid);
+        if(task.getId()=="") {
+            try {
+                CallableStatement call = MSSQLConnection.getConnection().prepareCall("{call dbo.getTasksNewId(?)}");
+                call.registerOutParameter(1, Types.INTEGER);
+                ResultSet rs = call.executeQuery();
+                while (rs.next()) {
+                    task.setId(rs.getString(1));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+            taskid = Integer.parseInt(task.getId());
+            System.out.println(taskid);
         }
-
-        taskid = Integer.parseInt(task.getId());
-
+        else {
+            taskid = Integer.parseInt(task.getId());
+        }
         colUserId.setCellValueFactory(new PropertyValueFactory<UserTask,String>("id"));
         colRole.setCellValueFactory(new PropertyValueFactory<UserTask,String>("role"));
         colFullName.setCellValueFactory(new PropertyValueFactory<UserTask,String>("fullname"));
